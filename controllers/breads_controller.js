@@ -18,20 +18,6 @@ breads.get('/new', (req, res) => {
   res.render('New')
 })
 
-// DELETE
-breads.delete('/:indexArray', (req, res) => {
-  bread.splice(req.params.indexArray, 1)
-  res.status(303).redirect('/breads')
-})
-
-// EDIT
-breads.get('/:indexArray/edit', (req, res) => {
-  res.render('edit', {
-    bread: Bread[req.params.indexArray],
-    index: req.params.indexArray
-  })
-})
-
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
   if (bread[req.params.arrayIndex]) {
@@ -42,6 +28,20 @@ breads.get('/:arrayIndex', (req, res) => {
   } else {
     res.send('404')
   }
+})
+
+// DELETE
+breads.delete('/:indexArray', (req, res) => {
+  bread.splice(req.params.indexArray, 1)
+  res.status(303).redirect('/breads')
+})
+
+// EDIT
+breads.get('/:indexArray/edit', (req, res) => {
+  res.render('edit', {
+    bread: bread[req.params.indexArray],
+    index: req.params.indexArray
+  })
 })
 
 // CREATE
@@ -65,7 +65,7 @@ breads.put('/:arrayIndex', (req, res) => {
   } else {
     req.body.hasGluten = false
   }
-  Bread[req.params.arrayIndex] = req.body
+  bread[req.params.arrayIndex] = req.body
   res.redirect(`/breads/${req.params.arrayIndex}`)
 })
 

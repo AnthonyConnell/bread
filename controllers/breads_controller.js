@@ -15,7 +15,6 @@ breads.get('/', (req, res) => {
       })
 })
 
-
 // NEW
 breads.get('/new', (req, res) => {
   Baker.find()
@@ -29,6 +28,7 @@ breads.get('/new', (req, res) => {
 // SHOW
 breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
+      .populate('baker')
       .then(foundBread => {
           const bakedBy = foundBread.getBakedBy()
           console.log(bakedBy)
@@ -37,7 +37,6 @@ breads.get('/:id', (req, res) => {
           })
       })
 })
-
 
 // DELETE
 breads.delete('/:id', (req, res) => {
@@ -49,11 +48,15 @@ breads.delete('/:id', (req, res) => {
 
 // EDIT
 breads.get('/:id/edit', (req, res) => {
-  Bread.findById(req.params.id)
-    .then(foundBread => {
-      res.render('edit', {
-        bread: foundBread
-      })
+  Baker.find()
+    .then(foundBakers => {
+        Bread.findById(req.params.id)
+          .then(foundBread => {
+            res.render('edit', {
+                bread: foundBread, 
+                bakers: foundBakers 
+            })
+          })
     })
 })
 
